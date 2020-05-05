@@ -109,7 +109,7 @@ def test(args, model, test_loader):
         100. * correct / len(test_loader.dataset)))
     return 100. * correct / len(test_loader.dataset)
 
-def main(i):
+def main():
     # Training settings
     parser = argparse.ArgumentParser(description='CDAN USPS MNIST')
     parser.add_argument('--method', type=str, default='CDAN-E', choices=['CDAN', 'CDAN-E', 'DANN'])
@@ -168,11 +168,6 @@ def main(i):
     optimizer = optim.SGD(model.parameters(), lr=args.lr, weight_decay=0.0005, momentum=0.9)
     optimizer_ad = optim.SGD(ad_net.parameters(), lr=args.lr2, weight_decay=0.0005, momentum=0.9)
 
-    '''
-    optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
-    optimizer_ad = optim.Adam(ad_net.parameters(), lr=args.lr2, weight_decay=1e-4)
-    '''
-
     save_table = np.zeros(shape=(args.epochs, 3))
     for epoch in range(1, args.epochs + 1):
         if epoch % decay_epoch == 0:
@@ -182,11 +177,8 @@ def main(i):
         acc1 = test(args, model, o_train_loader)
         acc2 = test(args, model, test_loader)
         save_table[epoch-1, :] = epoch-50, acc1, acc2
-        np.savetxt(str(i)+args.task + '_.txt', save_table, delimiter=',', fmt='%1.3f')
-    np.savetxt(str(i)+args.task + '_.txt', save_table, delimiter=',', fmt='%1.3f')
+        np.savetxt(args.task + '_.txt', save_table, delimiter=',', fmt='%1.3f')
+    np.savetxt(args.task + '_.txt', save_table, delimiter=',', fmt='%1.3f')
 
 if __name__ == '__main__':
-    for i in range(0,5):
-        main(i)
-
-    #main()
+    main()
