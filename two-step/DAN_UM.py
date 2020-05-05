@@ -69,7 +69,7 @@ def test(args, model, test_loader):
         100. * correct / len(test_loader.dataset)))
     return 100. * correct / len(test_loader.dataset)
 
-def main(i):
+def main():
     # Training settings
     parser = argparse.ArgumentParser(description='DAN USPS MNIST')
     parser.add_argument('--task', default='USPS2MNIST', help='task to perform')
@@ -112,11 +112,10 @@ def main(i):
         train(args, model, train_loader, train_loader1, optimizer, epoch)
         acc = test(args, model, test_loader)
         save_table[epoch-1, :] = epoch, acc
-        np.savetxt(str(i)+args.task+'_50m_128_0.005.txt', save_table, delimiter=',', fmt='%1.3f')
-    np.savetxt(str(i)+args.task+'_50m_128_0.005.txt', save_table, delimiter=',', fmt='%1.3f')
+        np.savetxt(args.task+'_50m_128_0.005.txt', save_table, delimiter=',', fmt='%1.3f')
+    np.savetxt(args.task+'_50m_128_0.005.txt', save_table, delimiter=',', fmt='%1.3f')
 
 if __name__ == '__main__':
-    for i in range(0,5):
-        main(i)
+    main()
 
 
